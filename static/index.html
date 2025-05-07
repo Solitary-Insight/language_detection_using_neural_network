@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Language Detection</title>
+    <style>
+        :root {
+            --background-color: #213448;
+            --background-color-fade: #495b6e;
+            --backgound-accent: #547792;
+            --forground-accent: #94B4C1;
+            --forground-color: #ECEFCA;
+        }
+
+        .body {
+            background-color: var(--background-color-fade);
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(10px);
+            /* For Safari */
+            justify-content: center;
+        }
+
+        #heading {
+            color: var(--forground-color);
+            font-weight: bold;
+            margin: 5px 0px;
+            text-align: center;
+            font-size: x-large;
+        }
+
+        .main {
+
+            background-color: var(--background-color);
+            padding: 30px;
+            border-radius: 30px;
+
+        }
+
+        .form-feild {
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .code-file-upload-label,
+        span {
+            color: var(--forground-color);
+            margin: 5px;
+
+        }
+
+        #code-file-upload {
+            color: var(--forground-color);
+            background-color: var(--backgound-accent);
+            border-radius: 5px;
+        }
+
+        #code-sample {
+            background-color: transparent;
+            border: 1px solid var(--backgound-accent);
+            width: 100%;
+            color: var(--forground-accent);
+            padding: 10px 5px;
+            border-radius: 20px;
+        }
+
+        #code-sample::selection {
+            color: var(--forground-accent);
+            background-color: var(--background-color);
+        }
+
+
+
+        #code-sample:focus {
+            background-color: var(--background-color-fade);
+            color: var(--forground-color);
+            text-decoration: none;
+            outline: none;
+        }
+
+        .form-submission {
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-submission button {
+            background-color: var(--forground-color);
+            border: none;
+            width: max-content;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: var(--background-color);
+            font-weight: bolder;
+        }
+
+        .form-submission button:hover {
+            transform: scale(1.07);
+        }
+
+        .form-divider {
+            display: flex;
+            color: var(--forground-color);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .divider-section {
+            margin: 5px;
+            height: 1px;
+            width: 10px;
+            background-color: var(--forground-color);
+        }
+
+        .chips {
+            display: block;
+        }
+
+        .chip {
+            background-color: var(--background-color-fade);
+            padding: 2px 4px;
+            display: inline-block;
+            margin: 2px 4px;
+            width: max-content;
+            height: max-content;
+            border-radius: 5px;
+        }
+
+        .prediction {
+            display: flex;
+        }
+
+        .pred-name {
+            background-color: var(--backgound-accent);
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            padding: 3px 6px;
+
+            margin-right: 0.5px;
+        }
+
+        .pred-val {
+            background-color: var(--backgound-accent);
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            margin-left: 0.5px;
+            padding: 3px 6px;
+
+
+
+        }
+    </style>
+</head>
+
+<body class="body">
+
+
+
+    <section class="main">
+        <h3 id="heading">Code Language Detection</h3>
+
+
+        <form onsubmit="(e)=>{e.preventDefault()}" id="code-form">
+
+            <div class="form-feild">
+
+                <textarea name="code-sample" rows="20" id="code-sample" placeholder="Paste your code here."></textarea>
+
+            </div>
+            <div class="form-divider">
+                <div class="divider-section"></div>
+                <span class=" ">Or</span>
+                <div class="divider-section"></div>
+            </div>
+            <div class="form-feild">
+                <label for="code-file-upload" class="code-file-upload-label">Choose a file</label>
+                <input type="file" name="code-file-upload" id="code-file-upload" placeholder="Upload file from device">
+
+
+            </div>
+            <div class="prediction-section">
+                <div class="prediction">
+                    <span class="pred-name">Text Box </span><span class="pred-val" id="text-code-pred"></span>
+                </div>
+                <div class="prediction">
+                    <span class="pred-name">Code File </span><span class="pred-val" id="file-code-pred"></span>
+
+                </div>
+            </div>
+
+            <div class="form-submission">
+                <button type="button" id="submit-btn">Check language</button>
+            </div>
+
+
+            <div class="chip-container">
+                <span>Supported Lanuages : </span>
+                <div class="chips">
+                    <span class="chip" id="chip-bash">bash</span>
+                    <span class="chip" id="chip-clojure">clojure</span>
+                    <span class="chip" id="chip-cpp">cpp</span>
+                    <span class="chip" id="chip-csharp">csharp</span>
+                    <span class="chip" id="chip-css">css</span>
+                    <span class="chip" id="chip-fsharp">fsharp</span>
+                    <span class="chip" id="chip-go">go</span>
+                    <span class="chip" id="chip-java">java</span>
+                    <span class="chip" id="chip-js">js</span>
+                    <span class="chip" id="chip-php">php</span>
+                    <span class="chip" id="chip-powershell">powershell</span>
+                    <span class="chip" id="chip-python">python</span>
+                    <span class="chip" id="chip-ruby">ruby</span>
+                    <span class="chip" id="chip-scala">scala</span>
+                    <span class="chip" id="chip-sql">sql</span>
+                    <span class="chip" id="chip-xml">xml</span>
+                </div>
+
+            </div>
+        </form>
+    </section>
+
+</body>
+
+<script defer>
+
+    submit_button = document.getElementById('submit-btn')
+    code_text_area = document.getElementById('code-sample')
+    code_file_input = document.getElementById('code-file-upload')
+    // code_file_input.addEventListener('change', function (event) {
+    //     const file = event.target.files[0];
+    //     if (!file) return;
+
+    //     const reader = new FileReader();
+    //     reader.onload = function (e) {
+    //         code_text_area.textContent = e.target.result;
+    //     };
+    //     reader.readAsText(file);
+    // });
+
+    submit_button.onclick = (event) => {
+        event.preventDefault()
+
+        const formData = new FormData();
+        formData.append('code', code_text_area.value);
+        formData.append('file', code_file_input.files[0]);
+
+        document.querySelectorAll('.chip').forEach(element => {
+            element.style.backgroundColor = '#495b6e';
+        });
+
+
+        fetch('http://127.0.0.1:5000/submit-code', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then((data) => {
+
+
+               return reflectChanges(data)
+            })
+            .catch(err => console.error('Error:', err));
+    }
+
+    function reflectChanges(data) {
+        document.getElementById(`chip-${data["code-prediction"]}`).style.backgroundColor = 'green';
+        document.getElementById(`chip-${data["file-prediction"]}`).style.backgroundColor = 'blue';
+
+        document.getElementById('text-code-pred').textContent = data["code-prediction"]
+        document.getElementById('text-code-pred').style.backgroundColor = 'green'
+        document.getElementById('file-code-pred').style.backgroundColor = 'blue'
+        document.getElementById('file-code-pred').textContent = data["file-prediction"]
+    }
+</script>
+
+</html>
